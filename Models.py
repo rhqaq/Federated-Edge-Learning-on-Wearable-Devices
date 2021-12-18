@@ -18,7 +18,7 @@ class SelfAttentionEncoder(nn.Module):
         x = (x * a).sum(dim=1)  # (N, D)
         return x
 
-class Mnist_2NN(nn.Module):
+class LSTM(nn.Module):
     def __init__(self):
         super().__init__()
         self.LSTM = nn.LSTM(
@@ -55,7 +55,7 @@ class Simple_LSTM(nn.Module):
         return tensor
 
 
-class Mnist_CNN(nn.Module):
+class MLP(nn.Module):
     def __init__(self):
         super().__init__()
         self.fc1 = nn.Linear(9, 1000)

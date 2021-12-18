@@ -3,7 +3,7 @@ import torch
 from torch.utils.data import TensorDataset
 from torch.utils.data import DataLoader
 from getDataset import GetWearDataSet
-from Models import Mnist_2NN,Mnist_CNN,Simple_LSTM
+from Models import LSTM,MLP,Simple_LSTM
 import torch.nn.functional as F
 import os
 from torch import optim
@@ -28,7 +28,7 @@ if __name__=="__main__":
     os.environ['CUDA_VISIBLE_DEVICES'] = '0'
     print(torch.cuda.device_count())
     dev = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
-    net = Mnist_CNN()
+    net = MLP()
     net = net.to(dev)
     opti = optim.SGD(net.parameters(), lr=0.05)
 
@@ -54,9 +54,9 @@ if __name__=="__main__":
             preds_list += preds.cuda().data.cpu().numpy().tolist()
         # print('accuracy: {}'.format(sum_accu / num))
         a_s = accuracy_score(label_list, preds_list)
-        p_s = precision_score(label_list, preds_list, labels=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9], average='macro')
-        r_s = recall_score(label_list, preds_list, labels=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9], average='macro')
-        f1_s = f1_score(label_list, preds_list, labels=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9], average='macro')
+        p_s = precision_score(label_list, preds_list, labels=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13,14], average='macro')
+        r_s = recall_score(label_list, preds_list, labels=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13,14], average='macro')
+        f1_s = f1_score(label_list, preds_list, labels=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13,14], average='macro')
         print('accuracy_score: {}'.format(a_s))
         print('precision_score: {}'.format(p_s))
         print('recall_score: {}'.format(r_s))

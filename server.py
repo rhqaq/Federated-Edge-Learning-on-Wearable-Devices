@@ -5,7 +5,7 @@ import numpy as np
 import torch
 import torch.nn.functional as F
 from torch import optim
-from Models import Mnist_2NN, Mnist_CNN
+from Models import LSTM, MLP
 from clients import ClientsGroup, client
 from sklearn.metrics import precision_score, recall_score, f1_score, accuracy_score, roc_auc_score, confusion_matrix
 # from joblib import Parallel,delayed
@@ -46,11 +46,11 @@ if __name__ == "__main__":
     # dev = torch.device("cpu")
     net = None
     if args['model_name'] == 'lstm':
-        net = Mnist_2NN()
+        net = LSTM()
         # net = torch.load('/root/rh/wearable_FL/code/FedAvg/use_pytorch/checkpoints/lstm_num_comm999_D5_al0.5_E5_B10_lr0.05_num_clients100_cf0.1.pth') #继续训练通信1000轮
 
     elif args['model_name'] == 'mlp':
-        net = Mnist_CNN()
+        net = MLP()
         # net = torch.load('/root/rh/wearable_FL/code/FedAvg/use_pytorch/checkpoints/mlp_num_comm999_D125_E5_B10_lr0.05_num_clients100_cf0.1.pth')
     if torch.cuda.device_count() > 1:
         print("Let's use", torch.cuda.device_count(), "GPUs!")
