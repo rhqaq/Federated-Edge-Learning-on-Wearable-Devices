@@ -21,7 +21,7 @@ The dataset is built from a Daily and Sports Activities Data Set ([DSA](https://
 
 ## System
 
-<img src="https://github.com/rhqaq/Federated-Edge-Learning-on-Wearable-Devices/blob/master/figures/wearableFLSys-alls.png?raw=true" alt="alt text" style="zoom:50%;" />
+<img src="https://github.com/rhqaq/Federated-Edge-Learning-on-Wearable-Devices/blob/main/figures/wearableFLSys-alls.png"  />
 Each group consists of people with similar activity habits, only having examples of **three activities**.
 Data of each group is uploaded to a trusted edge server to do efficient local training.
 The model is download from a cloud parameter server before local training and aggregated by the cloud parameter server after local training.
@@ -38,7 +38,7 @@ The baseline is **MLP**,composed of one input and one output layer, and one hidd
 
 ## Results
 
-<img src="https://github.com/rhqaq/Federated-Edge-Learning-on-Wearable-Devices/blob/master/figures/all.png?raw=true" alt="alt text" style="zoom:50%;" />
+<img src="https://github.com/rhqaq/Federated-Edge-Learning-on-Wearable-Devices/blob/main/figures/all.png" alt="alt text" style="zoom:50%;" />
 When the number of features is small and there are more activity categories to be predicted, the convergence speed of LSTM model in federated learning is significantly faster than MLP, and the number of communications required to achieve the same prediction accuracy is less
 FedRS fetch α= 0.9 has better federal learning performance than FedAvg, and α= 0.5 will slow down the convergence, but reduce the fluctuation of performance.
 
