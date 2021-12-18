@@ -22,7 +22,7 @@ The dataset is built from a Daily and Sports Activities Data Set ([DSA](https://
 ## System
 
 <img src="https://github.com/rhqaq/Federated-Edge-Learning-on-Wearable-Devices/blob/main/figures/wearableFLSys-alls.png"  />
-Each group consists of people with similar activity habits, only having examples of **three activities** .
+Each group consists of people with similar activity habits, only having examples of three activities.
 Data of each group is uploaded to a trusted edge server to do efficient local training.
 The model is download from a cloud parameter server before local training and aggregated by the cloud parameter server after local training.
 
