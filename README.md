@@ -1,7 +1,7 @@
 # Federated Edge Learning with LSTM and FedRS for Wearable Devices
 
-In reality, a large number of users' wearable devices are mainly smart watches which can only collect limited user information features.So federation learning with MLP model is unable to get good enough performance in classification task. We use the classification model based on LSTM and attention mechanism to learn the temporal relationship in limited information and achieve better **Human Activity Recognition (HAR)**.
-The federated learning for wearable device will face the **label distribution non IID** problem. In order to solve this problem, we applies **FedRS** which is a new federated learning algorithm. We found that in the federal learning task for wearable devices, when the main parameters of FedRS α higher can improve the model training effect, but α Lower will make local training difficult to converge.
+In reality, a large number of users' wearable devices are mainly smart watches which can only collect limited user information features.So federation learning with MLP model is unable to get good enough performance in classification task. We use the classification model based on **LSTM and attention mechanism** to learn the temporal relationship in limited information and achieve better **Human Activity Recognition (HAR)**.
+The federated learning for wearable device will face the **label distribution non IID** problem. In order to solve this problem, we applies **FedRS** which is a new federated learning algorithm. We found that in the federated learning task for wearable devices, when the main parameters of FedRS α higher can improve the model training effect, but α Lower will make local training difficult to converge.
 **Edge servers** are used to reduce the local training pressure of wearable devices and reduce the communication cost of Federated learning.
 
 
