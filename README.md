@@ -21,7 +21,6 @@ The dataset is built from a Daily and Sports Activities Data Set ([DSA](https://
 ## System
 
 <img src="https://github.com/rhqaq/Federated-Edge-Learning-on-Wearable-Devices/blob/main/figures/wearableFLSys-alls.png"  />
-In ourthe federate edge learning framework, each group consists of people with similar activity habits, i.e., each group only has data examples of three selected activity typesies. Data of each group is uploaded to a trusted edge server to implementrealize efficient local training. The model is downloaded from the cloud-based parameter aggregator before local training and will also be aggregated by the cloud-based parameter aggregator after local training.
 In our federate edge learning framework, each group consists of people with similar activity habits, i.e., each group only has data examples of three selected activity types. Data of each group is uploaded to a trusted edge server to implement efficient local training. The model is downloaded from the cloud-based parameter aggregator before local training and will also be aggregated by the cloud-based parameter aggregator after local training.
 
 
