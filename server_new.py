@@ -91,25 +91,23 @@ if __name__ == "__main__":
             clients_in_comm = ['client{}'.format(i) for i in order[0:num_in_comm]]
 
             sum_parameters = None
-            total_num = 0
             for client in tqdm(clients_in_comm):
                 # local_parameters = myClients.clients_set[client].localUpdate(args['epoch'], args['batchsize'], net,
                 #                                                              loss_func, opti, global_parameters,
                 #                                                              args['alpha'])
-                local_parameters, local_num = myClients.clients_set[client].localUpdate(args['epoch'], args['batchsize'], net,
+                local_parameters = myClients.clients_set[client].localUpdate(args['epoch'], args['batchsize'], net,
                                                                              loss_func, opti, global_parameters,
                                                                              al)
-                total_num += local_num
                 if sum_parameters is None:
                     sum_parameters = {}
                     for key, var in local_parameters.items():
-                        sum_parameters[key] = local_num*var.clone()
+                        sum_parameters[key] = var.clone()
                 else:
                     for var in sum_parameters:
-                        sum_parameters[var] = sum_parameters[var] + local_num*local_parameters[var]
+                        sum_parameters[var] = sum_parameters[var] + local_parameters[var]
 
             for var in global_parameters:
-                global_parameters[var] = (sum_parameters[var] / total_num)
+                global_parameters[var] = (sum_parameters[var] / num_in_comm)
 
             # net.eval()
             with torch.no_grad():
@@ -134,10 +132,10 @@ if __name__ == "__main__":
                     # print('accuracy: {}'.format(sum_accu / num))
                     # print(prob)
                     a_s = accuracy_score(label_list, preds_list)
-                    p_s = precision_score(label_list, preds_list, labels=[0, 1, 2, 3, 4, 5, 6], average='macro')
-                    r_s = recall_score(label_list, preds_list, labels=[0, 1, 2, 3, 4, 5, 6], average='macro')
-                    f1_s = f1_score(label_list, preds_list, labels=[0, 1, 2, 3, 4, 5, 6], average='macro')
-                    auc_s = roc_auc_score(label_list, prob,multi_class='ovo',  labels=[0, 1, 2, 3, 4, 5, 6],average='macro')
+                    p_s = precision_score(label_list, preds_list, labels=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13,14], average='macro')
+                    r_s = recall_score(label_list, preds_list, labels=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13,14], average='macro')
+                    f1_s = f1_score(label_list, preds_list, labels=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13,14], average='macro')
+                    auc_s = roc_auc_score(label_list, prob,multi_class='ovo',  labels=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13,14],average='macro')
                     print('accuracy_score: {}'.format(a_s))
                     print('precision_score: {}'.format(p_s))
                     print('recall_score: {}'.format(r_s))
@@ -152,7 +150,7 @@ if __name__ == "__main__":
             # print(result)
             if (i + 1) % args['save_freq'] == 0:
                 np.save(os.path.join(args['save_path'],
-                                     'NEW45feature_{}_an{}_sn{}_D{}_al{}_E{}_B{}_lr{}_num_clients{}_cf{}.npy'.format(
+                                     '45feature_{}_an{}_sn{}_D{}_al{}_E{}_B{}_lr{}_num_clients{}_cf{}.npy'.format(
                                          args['model_name'],
                                          args['action_num'],
                                          args['shard_num'],
@@ -164,7 +162,7 @@ if __name__ == "__main__":
                                          args['num_of_clients'],
                                          args['cfraction'])), result)
                 torch.save(net, os.path.join(args['save_path'],
-                                             'NEW45feature_{}_num_comm{}_an{}_sn{}_D{}_al{}_E{}_B{}_lr{}_num_clients{}_cf{}.pth'.format(
+                                             '45feature_{}_num_comm{}_an{}_sn{}_D{}_al{}_E{}_B{}_lr{}_num_clients{}_cf{}.pth'.format(
                                                  args['model_name'],
                                                  i,
                                                  args['action_num'],

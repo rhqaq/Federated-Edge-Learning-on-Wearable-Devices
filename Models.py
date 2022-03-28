@@ -19,17 +19,17 @@ class SelfAttentionEncoder(nn.Module):
         return x
 
 class LSTM(nn.Module):
-    def __init__(self):
+    def __init__(self, input_size, num_classes):
         super().__init__()
         self.LSTM = nn.LSTM(
-            input_size=9,
+            input_size=input_size,
             hidden_size=100,
             num_layers=1,
             batch_first=True,
             bidirectional=False
         )
         self.attn = SelfAttentionEncoder(100)
-        self.fc = nn.Linear(100, 15)
+        self.fc = nn.Linear(100, num_classes)
     def forward(self, inputs):
         # (N,L,D) batch,时序长度,特征数量
         tensor = self.LSTM(inputs)[0] #(N,L,D)
@@ -56,14 +56,26 @@ class Simple_LSTM(nn.Module):
 
 
 class MLP(nn.Module):
-    def __init__(self):
+    def __init__(self, input_size, num_classes):
         super().__init__()
-        self.fc1 = nn.Linear(9, 1000)
-        self.fc2 = nn.Linear(1000, 15)
+        self.fc1 = nn.Linear(input_size, 1000)
+        self.fc2 = nn.Linear(1000, num_classes)
 
     def forward(self, inputs):
-        tensor = inputs.view(-1, 9)
-        tensor = F.relu(self.fc1(tensor))
+        tensor = F.relu(self.fc1(inputs))
+        # tensor = self.fc1(inputs)
         tensor = self.fc2(tensor)
         return tensor
 
+class SVM(nn.Module):
+    """
+    Using fully connected neural network to implement linear SVM and Logistic regression with hinge loss and
+    cross-entropy loss which computes softmax internally, respectively.
+    """
+    def __init__(self, input_size, num_classes):
+        super(SVM, self).__init__()    # Call the init function of nn.Module
+        self.fc = nn.Linear(input_size, num_classes)
+
+    def forward(self, x):
+        out = self.fc(x)
+        return out

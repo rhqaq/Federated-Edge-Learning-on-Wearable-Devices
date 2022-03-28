@@ -57,19 +57,16 @@ class GetWearDataSet(object):
                 for k in range(self.shard_num):
                     # 将分给一个client的shard数据合并出来
                     if k == 0:
-                        label = torch.zeros(all_data[0].shape[1], self.action_num).index_fill(1, torch.tensor(
-                            [i * self.shard_num + k]), 1)
+                        label = torch.zeros(all_data[0].shape[1], 19).index_fill(1, torch.tensor([i * self.shard_num + k]), 1)
                         # print(label)
                         b = all_data[i * self.shard_num + k][j]
                     else:
                         b = torch.cat((b, all_data[i * self.shard_num + k][j]), 0)
                         # label = torch.cat((label,torch.ones(120,1)*(i*self.shard_num+k)),0)
                         label = torch.cat(
-                            (label, torch.zeros(all_data[0].shape[1], self.action_num).index_fill(1, torch.tensor(
-                                [i * self.shard_num + k]), 1)), 0)
+                            (label, torch.zeros(all_data[0].shape[1], 19).index_fill(1, torch.tensor([i * self.shard_num + k]), 1)), 0)
                 b = b.squeeze().unsqueeze(0)
                 label = label.unsqueeze(0)
-
                 # print(label.size)
                 # print(b.size())
                 if not torch.is_tensor(conbine_data):
@@ -81,15 +78,10 @@ class GetWearDataSet(object):
 
         # print(conbine_data.size())
         # print(conbine_label.size())
-        # train1, test1, train2, test2, train3, test3 = conbine_data.split([20*self.divide_num, 4*self.divide_num, 20*self.divide_num, 4*self.divide_num, 20*self.divide_num, 4*self.divide_num], dim=1)
-        # train_l1, test_l1, train_l2, test_l2, train_l3, test_l3 = conbine_label.split([20*self.divide_num, 4*self.divide_num, 20*self.divide_num, 4*self.divide_num, 20*self.divide_num, 4*self.divide_num], dim=1)
-        # self.train_data, self.test_data = torch.cat((train1, train2, train3), 1), torch.cat((test1, test2, test3), 1)
-        # self.train_label, self.test_label = torch.cat((train_l1, train_l2, train_l3), 1), torch.cat((test_l1, test_l2, test_l3), 1)
-
-        train1, test1, train2, test2 = conbine_data.split([20*self.divide_num, 4*self.divide_num, 20*self.divide_num, 4*self.divide_num], dim=1)
-        train_l1, test_l1, train_l2, test_l2 = conbine_label.split([20*self.divide_num, 4*self.divide_num, 20*self.divide_num, 4*self.divide_num], dim=1)
-        self.train_data, self.test_data = torch.cat((train1, train2), 1), torch.cat((test1, test2), 1)
-        self.train_label, self.test_label = torch.cat((train_l1, train_l2), 1), torch.cat((test_l1, test_l2), 1)
+        train1, test1, train2, test2, train3, test3, train4, test4 = conbine_data.split([20*self.divide_num, 4*self.divide_num, 20*self.divide_num, 4*self.divide_num, 20*self.divide_num, 4*self.divide_num, 20*self.divide_num, 4*self.divide_num], dim=1)
+        train_l1, test_l1, train_l2, test_l2, train_l3, test_l3, train_l4, test_l4 = conbine_label.split([20*self.divide_num, 4*self.divide_num, 20*self.divide_num, 4*self.divide_num, 20*self.divide_num, 4*self.divide_num, 20*self.divide_num, 4*self.divide_num], dim=1)
+        self.train_data, self.test_data = torch.cat((train1, train2, train3, train4), 1), torch.cat((test1, test2, test3, test4), 1)
+        self.train_label, self.test_label = torch.cat((train_l1, train_l2, train_l3, train_l4), 1), torch.cat((test_l1, test_l2, test_l3, test_l4), 1)
         # self.train_data,self.test_data = conbine_data.split([200,40],dim=1)
         # self.train_label,self.test_label = conbine_label.split([200,40],dim=1)
         self.train_data_size = self.train_data.shape[1]
@@ -98,7 +90,7 @@ class GetWearDataSet(object):
 
 
 if __name__ == "__main__":
-    wearabel_data = GetWearDataSet(3, 20, 3, 5)
+    wearabel_data = GetWearDataSet(16, 80, 4, 125)
     print(wearabel_data.train_data.size())
     # print(wearabel_data.train_data.reshape(5,20,-1,25, 45)[0,:,:,:,18:27])
     print(wearabel_data.train_label.size())
