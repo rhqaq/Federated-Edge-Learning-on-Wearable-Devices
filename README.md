@@ -45,7 +45,15 @@ The average performance of the trained model in the last 25 iterations are shown
 ## Resources
 
   * **Paper:** ["CloudyFL: A Cloudlet-Based Federated Learning Framework for Sensing User Behavior Using Wearable Devices"](https://www.researchgate.net/profile/Yang-Chen-125/publication/361025351_CloudyFL_A_Cloudlet-Based_Federated_Learning_Framework_for_Sensing_User_Behavior_Using_Wearable_Devices_ACM_Reference_Format/links/6298927b416ec50bdb04c440/CloudyFL-A-Cloudlet-Based-Federated-Learning-Framework-for-Sensing-User-Behavior-Using-Wearable-Devices-ACM-Reference-Format.pdf)
-  
+  ### Reference
+```
+@article{gong2022cloudyfl,
+  title={CloudyFL: A Cloudlet-Based Federated Learning Framework for Sensing User Behavior Using Wearable Devices},
+  author={Gong, Qingyuan and Ruan, Hui and Chen, Yang and Su, Xiang},
+  booktitle = {Proceedings of the 6th International Workshop on Embedded and Mobile Deep Learning},
+  year={2022}
+}
+```
 ## References
 
 [1] Billur Barshan and Murat Cihan Yüksek. 2013. Recognizing Daily and Sports Activities in Two Open Source Machine Learning Environments Using Body-Worn Sensor Units. The Computer Journal 57, 11 (2013), 1649–1667. 
