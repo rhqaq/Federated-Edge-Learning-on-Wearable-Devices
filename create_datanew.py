@@ -254,4 +254,4 @@ def create_new_data():
 # 后5人数据分成6份，都是取50倍数
 # 一共得到100份数据，每份拥有的类型数是2或3
 # 把每类类型的数据取最大倍数的数，然后均分。再把要s'd合并的类型数据合并，得到一个client的数据，再s'd
-create_new_data()
+# create_new_data()

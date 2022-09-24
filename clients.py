@@ -2,17 +2,17 @@ import numpy as np
 import torch
 from torch.utils.data import TensorDataset
 from torch.utils.data import DataLoader
-# from getDataset import GetWearDataSet
+from getDataset import GetWearDataSet
 import getDataset_new
-from create_data import create_new_data
 
 class client(object):
-    def __init__(self, trainDataSet,train_label_set, dev):
+    def __init__(self, trainDataSet,train_num,train_label_set, dev):
         self.train_ds = trainDataSet
         self.train_label_set = train_label_set
         self.dev = dev
         self.train_dl = None
         self.local_parameters = None
+        self.train_num = train_num
 
     def localUpdate(self, localEpoch, localBatchSize, Net, lossFun, opti, global_parameters,alpha):
         Net.load_state_dict(global_parameters, strict=True)
@@ -22,15 +22,19 @@ class client(object):
                 data, label = data.to(self.dev), label.to(self.dev)
                 preds = Net(data)
                 # 修改为FedRS
+                print(self.train_label_set)
+                print('缺失的label')
                 for i in range(preds.shape[1]):
                     if i not in self.train_label_set:
+                        print(i)
                         preds[:,i] = preds[:,i]* alpha
-                loss = lossFun(preds, label.long())
+
+                loss = lossFun(preds, label)
                 loss.backward()
                 opti.step()
                 opti.zero_grad()
 
-        return Net.state_dict(),self.train_ds.shape[0]
+        return Net.state_dict(),self.train_num
 
     def local_val(self):
         pass
@@ -50,29 +54,25 @@ class ClientsGroup(object):
         self.dataSetBalanceAllocation()
 
     def dataSetBalanceAllocation(self):
-        # mnistDataSet = GetWearDataSet(self.action_num,self.client_num, self.shard_num,self. divide_num)
-
-        # test_data = mnistDataSet.test_data.reshape(-1,25,45)[:,:,18:27]
-        # test_data = mnistDataSet.test_data.reshape(-1,45)[:,18:27] # for MLP
-        # test_data = mnistDataSet.test_data.reshape(-1,45) # for MLP
+        mnistDataSet = GetWearDataSet(self.action_num,self.client_num, self.shard_num,self. divide_num)
         #
+        # test_data = mnistDataSet.test_data.reshape(-1,45)
+        test_data = mnistDataSet.test_data.reshape(-1,25,45)
         # # print(test_data.size())
-        # test_label = torch.argmax(mnistDataSet.test_label.reshape(-1,15), dim=1)
+        test_label = torch.argmax(mnistDataSet.test_label.reshape(-1,self.action_num), dim=1)
         # # print(test_label.size())
-        # self.test_data_loader = DataLoader(TensorDataset( test_data, test_label), batch_size=1024, shuffle=False)
+        self.test_data_loader = DataLoader(TensorDataset( test_data, test_label), batch_size=1000, shuffle=False)
         #
-        # train_data = mnistDataSet.train_data
-        # train_label = mnistDataSet.train_label
+        train_data = mnistDataSet.train_data
+        train_label = mnistDataSet.train_label
 
-        train_data_all,test_data_all = create_new_data()
-        test_data = test_data_all[:, 1:4]
-        test_label = test_data_all[:, 4]
-        self.test_data_loader = DataLoader(TensorDataset(test_data, test_label), batch_size=1024, shuffle=False)
-        # DataSet1 = getDataset_new.GetWearDataSet(16, 80, 4, 125)
-        # DataSet2 = GetWearDataSet(3, 20, 3, 125)
-        # test_data = torch.cat((DataSet1.test_data.reshape(-1, 45)[:, 18:27],DataSet2.test_data.reshape(-1, 45)[:, 18:27]),0)
+        # DataSet1 = getDataset_new.GetWearDataSet(16, 80, 4, 5)
+        # DataSet2 = GetWearDataSet(3, 20, 3, 5)
+        # train_data = torch.cat((DataSet1.train_data, DataSet2.train_data),0)
+        # train_label = torch.cat((DataSet1.train_label,DataSet2.train_label),0)
+        # test_data = torch.cat((DataSet1.test_data.reshape(-1, 25,45),DataSet2.test_data.reshape(-1, 25,45)),0)
         # test_label = torch.cat((torch.argmax(DataSet1.test_label.reshape(-1, 19), dim=1), torch.argmax(DataSet2.test_label.reshape(-1, 19), dim=1)),0)
-        # self.test_data_loader = DataLoader(TensorDataset(test_data, test_label), batch_size=100, shuffle=False)
+        # self.test_data_loader = DataLoader(TensorDataset(test_data, test_label), batch_size=1000, shuffle=False)
 
         # shard_size = mnistDataSet.train_data_size // self.num_of_clients // 2
         # shards_id = np.random.permutation(mnistDataSet.train_data_size // shard_size)
@@ -86,20 +86,20 @@ class ClientsGroup(object):
 
             # local_data, local_label = np.vstack((data_shards1, data_shards2)), np.vstack((label_shards1, label_shards2))
             # if i<80:
-            #
+            #     # local_data, local_label = train_data[i], train_label[i]
             #     local_data, local_label = DataSet1.train_data[i],DataSet1.train_label[i]
             # else:
             #     local_data, local_label = DataSet2.train_data[i-80], DataSet2.train_label[i-80]
-            local_data, local_label = train_data_all[i][:,1:4], train_data_all[i][:,4]
-            # local_data = local_data[:,18:27]
-            # local_data = local_data[:,:, 18:27]
+            # local_data = local_data
+            local_data, local_label = train_data[i],train_label[i]
+            local_data = local_data
             # print(local_data.size())
             # print(local_label.size())
-            # local_label = np.argmax(local_label, axis=1)
+            local_label = np.argmax(local_label, axis=1)
             local_label_set = local_label
             local_label_set = np.unique((local_label_set.numpy()))
             # print(local_label.size())
-            someone = client(TensorDataset(local_data, local_label), local_label_set,self.dev)
+            someone = client(TensorDataset(local_data, local_label), local_label.shape[0], local_label_set,self.dev)
             self.clients_set['client{}'.format(i)] = someone
 
 if __name__=="__main__":

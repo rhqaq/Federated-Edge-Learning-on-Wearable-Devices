@@ -19,6 +19,8 @@ class GetWearDataSet(object):
         self.test_data = None
         self.test_label = None
         self.test_data_size = None
+        self.train_data_combine, self.valid_data_combine = [0]*5, [0]*5
+        self.train_label_combine, self.valid_label_combine = [0]*5, [0]*5
 
         self.DataSetConstruct()
 
@@ -81,19 +83,105 @@ class GetWearDataSet(object):
 
         # print(conbine_data.size())
         # print(conbine_label.size())
-        # train1, test1, train2, test2, train3, test3 = conbine_data.split([20*self.divide_num, 4*self.divide_num, 20*self.divide_num, 4*self.divide_num, 20*self.divide_num, 4*self.divide_num], dim=1)
-        # train_l1, test_l1, train_l2, test_l2, train_l3, test_l3 = conbine_label.split([20*self.divide_num, 4*self.divide_num, 20*self.divide_num, 4*self.divide_num, 20*self.divide_num, 4*self.divide_num], dim=1)
-        # self.train_data, self.test_data = torch.cat((train1, train2, train3), 1), torch.cat((test1, test2, test3), 1)
-        # self.train_label, self.test_label = torch.cat((train_l1, train_l2, train_l3), 1), torch.cat((test_l1, test_l2, test_l3), 1)
+        train1, test1, train2, test2, train3, test3 = conbine_data.split([20*self.divide_num, 4*self.divide_num, 20*self.divide_num, 4*self.divide_num, 20*self.divide_num, 4*self.divide_num], dim=1)
+        train_l1, test_l1, train_l2, test_l2, train_l3, test_l3 = conbine_label.split([20*self.divide_num, 4*self.divide_num, 20*self.divide_num, 4*self.divide_num, 20*self.divide_num, 4*self.divide_num], dim=1)
+        # print(torch.argmax(train_l1.reshape(-1, self.action_num), dim=1))
+        # print(np.unique((torch.argmax(train_l1.reshape(-1, self.action_num), dim=1).numpy())))
+        # print(np.unique((torch.argmax(train_l2.reshape(-1, self.action_num), dim=1).numpy())))
+        # print(np.unique((torch.argmax(train_l3.reshape(-1, self.action_num), dim=1).numpy())))
+        self.train_data, self.test_data = torch.cat((train1, train2, train3), 1), torch.cat((test1, test2, test3), 1)
+        self.train_label, self.test_label = torch.cat((train_l1, train_l2, train_l3), 1), torch.cat((test_l1, test_l2, test_l3), 1)
+        # conbine_label = torch.argmax(conbine_label, dim=2)
 
-        train1, test1, train2, test2 = conbine_data.split([20*self.divide_num, 4*self.divide_num, 20*self.divide_num, 4*self.divide_num], dim=1)
-        train_l1, test_l1, train_l2, test_l2 = conbine_label.split([20*self.divide_num, 4*self.divide_num, 20*self.divide_num, 4*self.divide_num], dim=1)
-        self.train_data, self.test_data = torch.cat((train1, train2), 1), torch.cat((test1, test2), 1)
-        self.train_label, self.test_label = torch.cat((train_l1, train_l2), 1), torch.cat((test_l1, test_l2), 1)
-        # self.train_data,self.test_data = conbine_data.split([200,40],dim=1)
-        # self.train_label,self.test_label = conbine_label.split([200,40],dim=1)
+        # train1, test1, train2, test2 = conbine_data.split([20*self.divide_num, 4*self.divide_num, 20*self.divide_num, 4*self.divide_num], dim=1)
+        # train_l1, test_l1, train_l2, test_l2 = conbine_label.split([20*self.divide_num, 4*self.divide_num, 20*self.divide_num, 4*self.divide_num], dim=1)
+        # self.train_data, self.test_data = torch.cat((train1, train2), 1), torch.cat((test1, test2), 1)
+        # self.train_label, self.test_label = torch.cat((train_l1, train_l2), 1), torch.cat((test_l1, test_l2), 1)
+        # #
         self.train_data_size = self.train_data.shape[1]
         self.test_data_size = self.test_data.shape[1]
+
+        # train1, valid1, train2, valid2 = self.train_data.split(
+        #     [16 * self.divide_num, 4 * self.divide_num, 16 * self.divide_num, 4 * self.divide_num], dim=1)
+        # train_l1, valid_l1, train_l2, valid_l2 = self.train_label.split(
+        #     [16 * self.divide_num, 4 * self.divide_num, 16 * self.divide_num, 4 * self.divide_num], dim=1)
+        # self.train_data_combine, self.valid_data_combine = torch.cat((train1, train2), 1), torch.cat((valid1, valid2), 1)
+        # self.train_label_combine, self.valid_label_combine = torch.cat((train_l1, train_l2), 1), torch.cat((valid_l1, valid_l2), 1)
+
+        # train1, valid1, train2, valid2, train3, valid3 = self.train_data.split(
+        #     [16 * self.divide_num, 4 * self.divide_num, 16 * self.divide_num, 4 * self.divide_num, 16 * self.divide_num, 4 * self.divide_num], dim=1)
+        # train_l1, valid_l1, train_l2, valid_l2, train_l3, valid_l3 = self.train_label.split(
+        #     [16 * self.divide_num, 4 * self.divide_num, 16 * self.divide_num, 4 * self.divide_num, 16 * self.divide_num, 4 * self.divide_num], dim=1)
+
+
+        # for i in range(5):
+        #     self.train_data_combine[i], self.valid_data_combine[i] = torch.cat((self.train_data[:,:20*i,:], self.train_data[:,20*(i+1):100+20*i,:], self.train_data[:,100+20*(i+1):200+20*i,:], self.train_data[:,200+20*(i+1):,:]), 1), \
+        #                                                              torch.cat((self.train_data[:,20*i:20*(i+1),:], self.train_data[:,100+20*i:100+20*(i+1),:], self.train_data[:,200+20*i:200+20*(i+1),:]), 1)
+        #     self.train_label_combine[i], self.valid_label_combine[i] = torch.cat((self.train_label[:,:20*i,:], self.train_label[:,20*(i+1):100+20*i,:], self.train_label[:,100+20*(i+1):200+20*i,:], self.train_label[:,200+20*(i+1):,:]), 1), \
+        #                                                              torch.cat((self.train_label[:,20*i:20*(i+1),:], self.train_label[:,100+20*i:100+20*(i+1),:], self.train_label[:,200+20*i:200+20*(i+1),:]), 1)
+        #
+        a = 4 * self.divide_num
+        b = 20 * self.divide_num
+        # for i in range(5):
+        #     self.train_data_combine[i], self.valid_data_combine[i] = torch.cat((self.train_data[:, :a * i, :],
+        #                                                                         self.train_data[:,
+        #                                                                         a * (i + 1):b + a * i, :],
+        #                                                                         self.train_data[:,
+        #                                                                         b + a * (i + 1):2 * b + a * i, :],
+        #                                                                         self.train_data[:,
+        #                                                                         2 * b + a * (i + 1):, :]
+        #                                                                         ), 1), \
+        #                                                              torch.cat((
+        #                                                                        self.train_data[:, a * i:a * (i + 1), :],
+        #                                                                        self.train_data[:,
+        #                                                                        b + a * i:b + a * (i + 1), :],
+        #                                                                        self.train_data[:,
+        #                                                                        2 * b + a * i:2 * b + a * (i + 1), :]
+        #                                                                         ),
+        #                                                                        1)
+        #     self.train_label_combine[i], self.valid_label_combine[i] = torch.cat((self.train_label[:, :a * i, :],
+        #                                                                           self.train_label[:,
+        #                                                                           a * (i + 1):b + a * i, :],
+        #                                                                           self.train_label[:,
+        #                                                                           b + a * (i + 1):2 * b + a * i, :],
+        #                                                                           self.train_label[:,
+        #                                                                           2 * b + a * (i + 1):, :]
+        #                                                                           ), 1), \
+        #                                                                torch.cat((self.train_label[:, a * i:a * (i + 1),
+        #                                                                           :], self.train_label[:,
+        #                                                                               b + a * i:b + a * (i + 1), :],
+        #                                                                           self.train_label[:,
+        #                                                                           2 * b + a * i:2 * b + a * (i + 1), :]
+        #                                                                           ), 1)
+
+
+        # for i in range(5):
+        #     self.train_data_combine[i], self.valid_data_combine[i] = torch.cat((self.train_data[:, :a * i, :],
+        #                                                                         self.train_data[:,
+        #                                                                         a * (i + 1):b + a * i, :],
+        #                                                                         self.train_data[:,
+        #                                                                         b + a * (i + 1):, :],
+        #
+        #                                                                         ), 1), \
+        #                                                              torch.cat((
+        #                                                                        self.train_data[:, a * i:a * (i + 1), :],
+        #                                                                        self.train_data[:,
+        #                                                                        b + a * i:b + a * (i + 1), :]
+        #
+        #                                                                         ),
+        #                                                                        1)
+        #     self.train_label_combine[i], self.valid_label_combine[i] = torch.cat((self.train_label[:, :a * i, :],
+        #                                                                           self.train_label[:,
+        #                                                                           a * (i + 1):b + a * i, :],
+        #                                                                           self.train_label[:,
+        #                                                                           b + a * (i + 1):, :],
+        #
+        #                                                                           ), 1), \
+        #                                                                torch.cat((self.train_label[:, a * i:a * (i + 1),
+        #                                                                           :], self.train_label[:,
+        #                                                                               b + a * i:b + a * (i + 1), :],
+        #
+        #                                                                           ), 1)
         # print()
 
 

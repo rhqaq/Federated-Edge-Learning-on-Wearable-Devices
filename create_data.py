@@ -288,13 +288,14 @@ def create_pamap_data():
     test_data = 0
     test_label = 0
     min_max_scaler = preprocessing.MinMaxScaler()
-    x1 = read_dat('D:\wearable\PAMAP_Dataset\PAMAP_Dataset\Indoor\subject1.dat')
-    x2 = read_dat('D:\wearable\PAMAP_Dataset\PAMAP_Dataset\Outdoor\subject2.dat')
-    x = np.append(x1,x2,axis=0)
-    print(x.shape)
-    x = x[:,2:]
-    min_max_scaler = min_max_scaler.fit(x)
+    # x1 = read_dat('D:\wearable\PAMAP_Dataset\PAMAP_Dataset\Indoor\subject1.dat')
+    # x2 = read_dat('D:\wearable\PAMAP_Dataset\PAMAP_Dataset\Outdoor\subject2.dat')
+    # x = np.append(x1,x2,axis=0)
+    # print(x.shape)
+    # x = x[:,2:]
+    # min_max_scaler = min_max_scaler.fit(x)
     flag = True
+    client_list = [0]*24
     # data_dir = 'D:\wearable\PAMAP_Dataset\PAMAP_Dataset\Indoor'
     for data_dir in ['D:\wearable\PAMAP_Dataset\PAMAP_Dataset\Indoor','D:\wearable\PAMAP_Dataset\PAMAP_Dataset\Outdoor']:
         for file in os.listdir(data_dir):
@@ -303,7 +304,7 @@ def create_pamap_data():
             a = np.delete(a, 0, axis=1)
             # a = np.delete(a, [0,16,15,14,13,30,29,28,27,44,43,42,41], axis=1)
             # print(a.shape)
-
+            client_num = 1
             # 按顺序将label一样的矩阵提取出来
             while(a.shape[0]):
                 label = int(a[0, 0])
@@ -315,14 +316,16 @@ def create_pamap_data():
                     #     continue
                     if a[i,0]!=label:
                         if label != 0:
+                            client_list[label] += 1
+                            client_num += 1
                             b = a[:i,:]
                             b = b[:b.shape[0] - b.shape[0] % 600, :]
                             b = torch.FloatTensor(b.astype(float))
                             tz = b.shape[0] // 6
                             b_train, b_test = b.split([5 * tz, tz], dim=0)
                             # print(a_train.shape)
-                            b_train_data, b_train_label = dim_turn(b_train, 31,min_max_scaler)
-                            b_test_data, b_test_label = dim_turn(b_test, 31,min_max_scaler)
+                            b_train_data, b_train_label = dim_turn(b_train, 43,min_max_scaler)
+                            b_test_data, b_test_label = dim_turn(b_test, 43,min_max_scaler)
 
                             all_data.append(b_train_data)
                             all_label.append(b_train_label)
@@ -343,8 +346,8 @@ def create_pamap_data():
                         tz = b.shape[0] // 6
                         b_train, b_test = b.split([5 * tz, tz], dim=0)
                         # print(a_train.shape)
-                        b_train_data, b_train_label = dim_turn(b_train, 31,min_max_scaler)
-                        b_test_data, b_test_label = dim_turn(b_test, 31,min_max_scaler)
+                        b_train_data, b_train_label = dim_turn(b_train, 43,min_max_scaler)
+                        b_test_data, b_test_label = dim_turn(b_test, 43,min_max_scaler)
 
                         all_data.append(b_train_data)
                         all_label.append(b_train_label)
@@ -355,7 +358,9 @@ def create_pamap_data():
                             test_data = torch.cat((test_data, b_test_data), 0)
                             test_label = torch.cat((test_label, b_test_label), 0)
                     break
+            print('该文件{}'.format(client_num))
 
+    print(client_list)
     for i in range(len(all_data)):
         print(all_data[i].shape)
     print(all_data[0][0,:])
@@ -365,8 +370,8 @@ def create_pamap_data():
     test_label = torch.LongTensor(enc.transform(test_label))
     for i in range(len(all_label)):
         all_label[i] = torch.LongTensor(enc.transform(all_label[i]))
-    # print(test_data.shape)
-    # print(test_label.shape)
+    print(test_data.shape)
+    print(test_label.shape)
     return all_data, all_label, test_data, test_label
 # add_label()
 # create_MotionSense_data()

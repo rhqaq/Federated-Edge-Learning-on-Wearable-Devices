@@ -15,12 +15,12 @@ parser.add_argument('-g', '--gpu', type=str, default='0', help='gpu id to use(e.
 parser.add_argument('-an', '--action_num', type=int, default=15, help='numer of the actions')
 parser.add_argument('-nc', '--num_of_clients', type=int, default=100, help='numer of the clients')
 parser.add_argument('-sn', '--shard_num', type=int, default=3, help='numer of the shard')
-parser.add_argument('-dn', '--divide_num', type=int, default=125, help='numer of the time sequence division')
+parser.add_argument('-dn', '--divide_num', type=int, default=5, help='numer of the time sequence division')
 parser.add_argument('-cf', '--cfraction', type=float, default=0.1,
                     help='C fraction, 0 means 1 client, 1 means total clients')
 parser.add_argument('-E', '--epoch', type=int, default=5, help='local train epoch')
 parser.add_argument('-B', '--batchsize', type=int, default=1024, help='local train batch size')
-parser.add_argument('-mn', '--model_name', type=str, default='mlp', help='the model to train')
+parser.add_argument('-mn', '--model_name', type=str, default='lstm', help='the model to train')
 parser.add_argument('-al', '--alpha', type=float, default=1, help='numer of the shard')
 parser.add_argument('-lr', "--learning_rate", type=float, default=0.05, help="learning rate, \
                     use value from origin paper as default")
@@ -37,7 +37,7 @@ def test_mkdir(path):
 
 
 if __name__ == "__main__":
-    for al in [1]:
+    for al in [0.9]:
         seed_value = 2022  # 设定随机数种子
 
         np.random.seed(seed_value)
