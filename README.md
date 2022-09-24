@@ -42,7 +42,10 @@ In our experiment, we develop four experimentation setups for the evaluation of 
 In Scenario-10, Scenario-15 and Scenario-19, the number of iteration is 1000, while in Pamap-14 it is 2000. 
 The average performance of the trained model in the last 25 iterations are shown in Table 3. Notably, when using the (Att-LSTM)-FedRS design in the CloudyFL architecture, the human activity recognition reaches the best performance for all setups.
 
+## Resources
 
+  * **Paper:** ["CloudyFL: A Cloudlet-Based Federated Learning Framework for Sensing User Behavior Using Wearable Devices"](https://www.researchgate.net/profile/Yang-Chen-125/publication/361025351_CloudyFL_A_Cloudlet-Based_Federated_Learning_Framework_for_Sensing_User_Behavior_Using_Wearable_Devices_ACM_Reference_Format/links/6298927b416ec50bdb04c440/CloudyFL-A-Cloudlet-Based-Federated-Learning-Framework-for-Sensing-User-Behavior-Using-Wearable-Devices-ACM-Reference-Format.pdf)
+  
 ## References
 
 [1] Billur Barshan and Murat Cihan Yüksek. 2013. Recognizing Daily and Sports Activities in Two Open Source Machine Learning Environments Using Body-Worn Sensor Units. The Computer Journal 57, 11 (2013), 1649–1667. 
