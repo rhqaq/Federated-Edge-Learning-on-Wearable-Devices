@@ -37,8 +37,11 @@ The baseline models are implemented by **MLP**, composed of one input layer and 
 ## Results
 
 ## <img src="https://github.com/rhqaq/Federated-Edge-Learning-on-Wearable-Devices/blob/main/figures/all.png" />
-##When we only have a few features and have to predict more activity categories, the convergence speed of LSTM model in federated edge learning is significantly faster than MLP, and the number of communications required to achieve the same prediction performance is less. When we set α= 0.9, FedRS will show better federal learning performance than FedAvg. 
-##Setting α= 0.5 will slow down the convergence, but the fluctuation of performance will be reduced. 
+
+## When we only have a few features and have to predict more activity categories, the convergence speed of LSTM model in federated edge learning is significantly faster than MLP, and the number of communications required to achieve the same prediction performance is less. When we set α= 0.9, FedRS will show better federal learning performance than FedAvg. 
+
+## Setting α= 0.5 will slow down the convergence, but the fluctuation of performance will be reduced. 
+
 <img src="https://github.com/rhqaq/Federated-Edge-Learning-on-Wearable-Devices/blob/main/figures/result.jpg" />
 In our experiment, we develop four experimentation setups for the evaluation of the CloudyFL architecture. Considering the architecture of federated learning that the wearable devices are distributed to different cloudlets, we compare the performance of our system design in four scenarios. Based on PAMAP dataset and the 19 types of human activities in DSA dataset, we define the following four scenarios. 
 In Scenario-10, Scenario-15 and Scenario-19, the number of iteration is 1000, while in Pamap-14 it is 2000. 
