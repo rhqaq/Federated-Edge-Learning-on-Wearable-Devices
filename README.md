@@ -22,8 +22,9 @@ The second dataset is Physical Activity Monitoring for Aging People ([PAMAP](htt
 ## System
 
 <img src="https://github.com/rhqaq/Federated-Edge-Learning-on-Wearable-Devices/blob/main/figures/system.png"  />
-In our federate edge learning framework, each group consists of people with similar activity habits, i.e., each group only has data examples of three selected activity types. Data of each group is uploaded to a trusted edge server to implement efficient local training. The model is downloaded from the cloud-based parameter aggregator before local training and will also be aggregated by the cloud-based parameter aggregator after local training.
-
+In the design of CloudyFL, we divide the participants into different trusted zones. Each trusted zone is an organization which is trusted by the participating users and their devices within a coverage area. For each trusted zone, a cloudlet is responsible for executing the human activity recognition training tasks for the FL model and is trustworthy for all wearable devices within the trusted zone. In other words, the isolated trusted zones work collaboratively to build a global FL model. This model benefits from the sensed data from different trusted zones, without the need for retrieving the data out of each trusted zone. To reduce the communication cost, the trained parameters in each trusted zone are collected by the cloudlet and are then aggregated in the aggregator to update the global model. This two-stage process will iterate until reaching a convergence. 
+In particular, CloudyFL could leverage deep learning models designed to solve different application problems, such as predicting mobile phone user's activities, 
+recognizing pedestrian behaviors for autopilot, and health management. 
 
 
 ## Model
