@@ -29,8 +29,8 @@ In our federate edge learning framework, each group consists of people with simi
 ## Model
 
 <img src="https://github.com/rhqaq/Federated-Edge-Learning-on-Wearable-Devices/blob/main/figures/wearableFLSys-alls.png"  />
-The designed model is composed of one **LSTM** layer, one **attention** layer, and one output layer. We adopt **FedRS** to limit the update of missing class weights during the local training. 
-The baseline models are implemented by **MLP**, composed of one input layer and one output layer, also one hidden layer with 1000 units using ReLU activations and linear SVM.
+The designed model Att-LSTM is composed of one __LSTM__ layer, one __attention__ layer, and one output layer. We adopt **FedRS** to limit the update of missing class weights during the local training. 
+The baseline models are implemented by __MLP__, composed of one input layer and one output layer, also one hidden layer with 1000 units using ReLU activations and linear SVM.
 
 
 
